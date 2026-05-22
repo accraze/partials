@@ -5,6 +5,13 @@ Partials provides tools for analyzing partial series, timbral dissonance,
 and inharmonic spectra using the Sethares dissonance model.
 """
 
+from .combination import (
+    analyze_combination_density,
+    difference_tone,
+    generate_combination_tones,
+    ring_modulation_spectrum,
+    CombinationResult,
+)
 from .dissonance import (
     dissonance_interval,
     dissonance_spectrum,
@@ -29,6 +36,12 @@ __all__ = [
     "dissonance_interval",
     "DissonanceCurve",
     "Partial",
+    # Combination tones
+    "difference_tone",
+    "generate_combination_tones",
+    "ring_modulation_spectrum",
+    "analyze_combination_density",
+    "CombinationResult",
     # Morphing
     "SpectralMorph",
     "morph_dissonance",
