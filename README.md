@@ -41,23 +41,75 @@ d = dissonance_spectrum(partials)
 print(f"Custom spectrum dissonance: {d:.4f}")
 ```
 
-## API
+## Features
 
-### `dissonance_interval(freq1, freq2, harmonics=6, curve=None)`
+### 1. Sethares Dissonance Model
+- Compute sensory dissonance between partials
+- Analyze intervals and chords
+- Custom dissonance curves
 
-Compute dissonance of an interval between two fundamentals.
+### 2. Spectral Morphing
+- Smooth interpolation between timbres
+- Linear and logarithmic morphing
+- Track dissonance during transformation
 
-### `dissonance_spectrum(partials, curve=None)`
+```python
+from partials import SpectralMorph, Partial
 
-Compute total dissonance of a spectrum (multiple partials).
+source = [Partial(440, 1.0), Partial(880, 0.5)]
+target = [Partial(440, 1.0), Partial(660, 1.0)]
 
-### `dissonance_two_partial(f1, f2, a1=1.0, a2=1.0, curve=None)`
+morph = SpectralMorph(source, target, steps=10)
+for step in morph.interpolate():
+    print(dissonance_spectrum(step))
+```
 
-Compute dissonance between two individual partials.
+### 3. Inharmonicity Analysis
+- B-factor estimation (piano-style inharmonicity)
+- Harmonic deviation scoring
+- Generate inharmonic series
 
-### `DissonanceCurve`
+```python
+from partials import analyze_inharmonicity, generate_inharmonic_series
 
-Dataclass for customizing the dissonance curve parameters.
+# Analyze piano-like inharmonicity
+partials = generate_inharmonic_series(220.0, b_factor=0.001)
+result = analyze_inharmonicity(partials)
+print(f"B-factor: {result.b_factor}")
+```
+
+### 4. Visualization
+- ASCII spectrum plots
+- Dissonance curves
+- Morph trajectory visualization
+
+```python
+from partials.viz import plot_dissonance_curve, spectrum_text
+
+print(plot_dissonance_curve(440.0, max_ratio=2.0))
+print(spectrum_text(my_partials))
+```
+
+## API Reference
+
+### Core Functions
+- `dissonance_two_partial(f1, f2, a1, a2, curve)` - Two-partial dissonance
+- `dissonance_spectrum(partials, curve)` - Multi-partial dissonance
+- `dissonance_interval(freq1, freq2, harmonics, curve)` - Interval dissonance
+
+### Morphing
+- `SpectralMorph(source, target, steps, method)` - Morph between spectra
+- `morph_dissonance(source, target, steps)` - Dissonance during morph
+
+### Inharmonicity
+- `analyze_inharmonicity(partials, fundamental, max_harmonic)` - B-factor analysis
+- `generate_inharmonic_series(fundamental, num_partials, b_factor)` - Generate series
+- `harmonic_deviation_score(partials, fundamental)` - Deviation in cents
+
+### Classes
+- `Partial(freq, amp)` - Single partial
+- `DissonanceCurve(a1, a2, b1, b2, min_separation)` - Curve parameters
+- `InharmonicityResult` - Analysis results
 
 ## Theory
 
@@ -67,6 +119,19 @@ Key insights:
 - Two tones are most dissonant when separated by ~1/4 of a critical bandwidth
 - Consonance occurs when partials align (simple ratios) or are widely separated
 - The model explains why certain timbres sound consonant in some tunings but not others
+- Inharmonic spectra (bells, drums) have different consonance properties than harmonic ones
+
+## Examples
+
+Run the included demos:
+
+```bash
+# Basic demo
+python examples/demo.py
+
+# Advanced features
+python examples/advanced_demo.py
+```
 
 ## License
 
